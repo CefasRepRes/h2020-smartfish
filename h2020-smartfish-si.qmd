@@ -1,0 +1,126 @@
+---
+# Document details
+title: 'How an illuminated headline affects catches and species separation in a Celtic Sea mixed demersal trawl fishery: supplementary material'
+# date: "`r format(Sys.time(), '%A %d %B %Y')`"
+author: 'Samantha F. Birch$^{1,2,*}$, Stephen D. Gregory$^{3,4}$, David L. Maxwell$^{1}$, Marieke Desender$^{1}$ and Thomas L. Catchpole$^{1}$'
+authors:
+  - name: Samantha F. Birch$^{1,2,*}$
+  - name: Stephen D. Gregory$^{3,4}$
+    orcid: 0000-0002-8230-0191
+  - name: David L. Maxwell$^{1}$
+    orcid: 0000-0003-3943-0721
+  - name: Marieke Desender$^{1}$
+  - name: Thomas L. Catchpole$^{1}$
+    orcid: 0000-0002-5218-7749
+corresponding: "Samantha F. Birch [samantha.birch@cefas.gov.uk](mailto:samantha.birch@cefas.gov.uk)"
+abstract-title: "Affiliations"
+abstract: |
+
+  ^1^ The Centre for Environment, Fisheries and Aquaculture Science, Lowestoft, Suffolk, UK
+  
+  ^2^ The Centre for Environment, Fisheries and Aquaculture Science, Hayle, Cornwall, UK
+  
+  ^3^ The Centre for Environment, Fisheries and Aquaculture Science, Weymouth, Dorset, UK
+  
+  ^4^ Department of Life and Environmental Sciences, Faculty of Science and Technology, Bournemouth University, Poole BH12 5BB, UK
+  
+  \* Corresponding author: tel: +44 1736 759 660; email: [samantha.birch@cefas.gov.uk](samantha.birch@cefas.gov.uk).
+
+# Output details
+format:   
+  html:
+    embed-resources: true
+    toc: true
+
+# References formatting
+csl: fisheries-research.csl # more at www.zotero.org/styles
+bibliography: references.bib
+link-citations: true
+
+# editor
+editor: source
+
+# Analysis details
+version: "`r version$version.string`"
+packages: ""
+dependencies: ""
+---
+
+```{r doc_setup, echo = FALSE, warning = FALSE, message = FALSE}
+
+# document setup ----------------------------------------------------------
+
+# clear workspace
+rm(list = ls())
+
+# document setup
+library(knitr, quietly = TRUE)
+opts_knit$set(warning = FALSE, message = FALSE, commment = NA, eval = FALSE)
+opts_chunk$set(fig.width = 12, fig.height = 8, fig.path = 'plots/', 
+               echo = FALSE, warning = FALSE, message = FALSE)
+library(here)
+library(readxl)
+library(gt)
+library(data.table)
+
+## source startup scripts
+source(here('scripts', 'r-setup.R'))
+source(here('scripts', 'libraries-and-functions.R'))
+source(here('scripts', 'analysis-options.R'))
+source(here('scripts', 'global-variables.R'))
+
+```
+
+# Total catches
+
+```{r}
+
+## load the results
+load(here('results', paste0('total_catches_results_', comp_stat, '.RData')))
+
+```
+
+## best model summaries
+
+```{r}
+
+## print the best model summaries
+lapply(best_mods_lst, summary)
+
+```
+
+## best model diagnostics
+
+```{r}
+
+## print model diagnostic plots
+print(a_lst)
+
+```
+
+# Proportion in upper codend
+
+```{r}
+
+## load the results
+load(here('results', paste0('prop_upper_results_', comp_stat, '.RData')))
+
+```
+
+## best model summaries
+
+```{r}
+
+## print the best model summaries
+lapply(best_mods_lst, summary)
+
+```
+
+## best model diagnostics
+
+```{r}
+
+## print model diagnostic plots
+print(a_lst)
+
+```

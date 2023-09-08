@@ -1,0 +1,14 @@
+# R-related files
+.Rproj.user
+.Rhistory
+*.RData
+.Ruserdata
+
+# MS files
+*.doc*
+*.xls*
+*.ppt*
+
+# working folder
+working/
+TODO.md

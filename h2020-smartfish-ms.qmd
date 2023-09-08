@@ -1,0 +1,675 @@
+---
+# Document details
+title: 'How an illuminated headline affects catches and species separation in a Celtic Sea mixed demersal trawl fishery'
+# date: "`r format(Sys.time(), '%A %d %B %Y')`"
+author: 'Samantha F. Birch$^{1,2,*}$, Stephen D. Gregory$^{3,4}$, David L. Maxwell$^{1}$, Marieke Desender$^{1}$ and Thomas L. Catchpole$^{1}$'
+authors:
+  - name: Samantha F. Birch$^{1,2,*}$
+  - name: Stephen D. Gregory$^{3,4}$
+    orcid: 0000-0002-8230-0191
+  - name: David L. Maxwell$^{1}$
+    orcid: 0000-0003-3943-0721
+  - name: Marieke Desender$^{1}$
+  - name: Thomas L. Catchpole$^{1}$
+    orcid: 0000-0002-5218-7749
+corresponding: "Samantha F. Birch [samantha.birch@cefas.gov.uk](mailto:samantha.birch@cefas.gov.uk)"
+abstract-title: "Affiliations"
+abstract: |
+
+  ^1^ The Centre for Environment, Fisheries and Aquaculture Science, Lowestoft, Suffolk, UK
+  
+  ^2^ The Centre for Environment, Fisheries and Aquaculture Science, Hayle, Cornwall, UK
+  
+  ^3^ The Centre for Environment, Fisheries and Aquaculture Science, Weymouth, Dorset, UK
+  
+  ^4^ Department of Life and Environmental Sciences, Faculty of Science and Technology, Bournemouth University, Poole BH12 5BB, UK
+  
+  \* Corresponding author: tel: +44 1736 759 660; email: [samantha.birch@cefas.gov.uk](samantha.birch@cefas.gov.uk).
+
+# Output details
+format: 
+  html:
+    embed-resources: true
+    toc: true
+
+# References formatting
+csl: fisheries-research.csl # more at www.zotero.org/styles
+bibliography: references.bib
+link-citations: true
+
+# editor
+editor: source
+
+# Analysis details
+version: "`r version$version.string`"
+packages: ""
+dependencies: ""
+---
+
+```{r doc_setup, echo = FALSE, warning = FALSE, message = FALSE}
+
+# document setup ----------------------------------------------------------
+
+# clear workspace
+rm(list = ls())
+
+# document setup
+library(knitr, quietly = TRUE)
+opts_knit$set(warning = FALSE, message = FALSE, commment = NA, eval = FALSE)
+opts_chunk$set(fig.width = 12, fig.height = 8, fig.path = 'plots/', 
+               echo = FALSE, warning = FALSE, message = FALSE)
+library(here)
+library(readxl)
+library(gt)
+library(data.table)
+
+# inline tables and figures
+inline <- TRUE
+
+```
+
+**Short title** Artificial lights affect trawl selectivity
+
+**Keywords** Artificial light, Fish behaviour, Catch comparison, Demersal otter trawl
+
+# Abstract
+
+Installing artificial lights on fishing gear is increasingly being explored to alter the behaviour of fish during the capture process and modify selectivity. We investigated the effect of introducing artificial light on a commercial trawler operating in the English southwest mixed demersal fishery. Total catch and species vertical separation were compared and analysed in two identical separator trawls towed simultaneously. One trawl was equipped with blue LEDs along its headline, the other trawl served as a control to allow for pairwise catch comparison. Fishing trials were conducted at night and during the day. In the presence of lights, catches-at-length of haddock (*Melanogrammus aeglefinus*) were lower during the night and marginally higher during the day. Catches of grey gurnard (*Eutrigla gurnardus*), megrim (*Lepidorhombus whiffiagonis*) and whiting (*Merlangius merlangus*) were unaffected by lights. In terms of vertical separation, in the presence of lights, more haddock were retained in the lower codend during the day and night. Lights also increased the proportion of catches in the lower codend for grey gurnard, whiting and Northern squid (*Loligo forbesii*), but only during the day. This study shows there are species-specific reactions to artificial light during the trawl capture process and these reactions can be different between day and night. When reviewed with other studies, some common observations are identified, indicating that lights can change the behaviour of some species which normally rise inside the trawl during the capture process, such as haddock. The use of artificial lights offers an alternative method to modify trawl selectivity, by utilising species-specific reactions to light, and the ability to change the position and characteristics of the light, offers many avenues to investigate.
+
+<!-- Analysis starts here Analysis starts here Analysis starts here Analysis starts here -->
+
+```{r analysis}
+
+# choose analysis ---------------------------------------------------------
+
+# choose analyses
+do__orgdata <- 0
+do__explplots <- 0
+do__totcatches <- 0
+do__catchsplit <- 0
+do__finalplots <- 0
+
+# r setup -----------------------------------------------------------------
+source(here('scripts', 'r-setup.R'))
+
+# libraries & functions ---------------------------------------------------
+source(here('scripts', 'libraries-and-functions.R'))
+
+# analysis options --------------------------------------------------------
+source(here('scripts', 'analysis-options.R'))
+
+# analysis options --------------------------------------------------------
+source(here('scripts', 'global-variables.R'))
+
+# if any analyses chosen, then do analysis
+anly_choices <- sapply(ls(pattern = 'do__'), function(v) eval(parse(text = v)))
+do__anly <- ifelse(any(as.logical(anly_choices)), 1, 0)
+if (do__anly) {
+  
+  # organise data -----------------------------------------------------------
+  if (do__orgdata) source(here('scripts', '00-orgdata.R'))
+  
+  # explplots script ---------------------------------------------------------
+  if (do__explplots) source(here('scripts', '01-explplots.R'))
+  
+  # totcatches script -------------------------------------------------------
+  if (do__totcatches) source(here('scripts', '02-totcatches.R'))
+  
+  # catchsplit script -------------------------------------------------------
+  if (do__catchsplit) source(here('scripts', '03-catchsplit.R'))
+  
+  # finalplots script -------------------------------------------------------
+  if (do__finalplots) source(here('scripts', '04-finalplots.R'))
+  
+}
+
+# close -------------------------------------------------------------------
+source(here('scripts', 'close.R'))
+
+```
+
+<!-- Document starts here Document starts here Document starts here Document starts here -->
+
+\newpage
+
+# Introduction
+
+A recognised threat to the sustainable use of fish stocks is the unintended capture and subsequent discarding of unwanted fish, resulting in fishing mortality affecting the stock with no economic benefit, as the catch cannot be sold or eaten, and cannot contribute to the fishery in future years [@Catchpole2005]. The latest estimate of the magnitude of annual discards in global marine capture fisheries is 9.1 million tonnes [@PerezRoda2019].
+
+The European Union (EU) Common Fisheries Policy (CFP) introduced a landing obligation to progressively eliminate discards in EU fisheries (EU, 2013). The UK left the EU in 2020, and the UK Government has since stated its commitment to minimise unwanted catches and discarding (UK Fisheries Act, 2020). The EU landing obligation regulations were transposed into UK regulations as retained EU law. Under the landing obligation, all catches of regulated fish species must be landed and subtracted from catch quotas and once a catch quota is met, fishing must stop. This presents the fishing industry with challenges including the risk of a "choke" scenario (exhaustion of quota for one stock forcing a cessation of fishing for other stocks caught in the same fishery). To prevent choke, and maximise the revenue from quotas, fishers need to avoid catching fish that would result in a curtailment of their fishing season (choke species) and avoid catching undersized and low value fish, which would be deducted from their quota for little or no profit [@Catchpole2017]. To help achieve this, fishers will need to change their fishing practices, by altering where and when they fish and by modifying their fishing gear. This also highlights that modifying species selection of fishing gears can be as important as improving size selection.
+
+Discarding is generally highest in bottom trawl fisheries that catch a mix of species simultaneously [@Kelleher2005; @PerezRoda2019]. The mixed fishery in the Celtic Sea presents a particular challenge for managers and industry because healthy stocks are caught alongside overfished or depleted stocks and data limited stocks. In the Celtic Sea, the main gear used in demersal fisheries is the otter trawl. The species which pose the highest choke risk changes over time and is influenced by the size classes of fish caught and the availability of quotas. For example, in 2017, 50 % of haddock catches taken by Celtic Sea otter trawlers were unwanted [@ICES2018a]; by 2021 this reduced to 17 % [@ICES2022a]. In contrast, 6 % of cod (*Gadus morhua*) catches were unwanted in 2017 [@ICES2018b] and this had increased to 60 % by 2021 [@ICES2022b]. Considerable effort has been given to testing modified trawls to reduce unwanted catches without also reducing wanted catches. These selectivity studies have focused on increased mesh size, altered mesh geometry, selection grids, and escape panels [e.g., @Vogel2017;, @Gatti2020;, @Robert2020]. While progress has been made, the highly diverse catch composition in this fishery makes optimising trawl selectivity for all species an ongoing challenge.
+
+The species-specific behavioural reactions of fish as they encounter towed gear, including the height at which they enter a trawl, have been used to select and separate fish species in trawl fisheries [@Main1985; @Cotter1997; @Ferro2007]. Studies have also demonstrated that fish encountering trawls respond to changes in visual stimuli, and the success of measures to change the selectivity of towed gear often relies on fish being able to visually detect and orient themselves to escape opportunities [@Ryer2000; @Ryer2010; @Lomeli2012; @Glass1995]. With a detailed knowledge of a species’ response to different visual stimuli, it may be possible to manipulate its behaviour during the capture process, thus enhancing the selectivity for that species [@Arimoto2010]. The use of artificial lights in fishing gear is increasingly being tested to modify the behaviour of fish during the capture process [e.g., @Nguyen2019;, @ONeill2022;, @Cuende2022]. Studies have also shown that the inclusion of light has the potential to improve catch rates of some target species in pots and traps [@Bryhn2014; @Nguyen2017; @Humborstad2018], to deter seabirds and turtles from gillnets [@Wang2013; @Mangel2018], and to reduce bycatch of non-target species in trawls [e.g., @Hannah2015;, @Lomeli2019;, @Lomeli2018]. Therefore, lights have the potential to reduce seabed impacts and carbon emissions, when improved fishing efficiency results in less fishing time, as well as reducing unwanted catches, all of which can have economic benefits for fishers [@Nguyen2019]. However, relative to the physical modification of trawl gear, research into the effect of artificial light on fish catches during commercial trawling is in its infancy.
+
+Here we present a study that adds to the existing research on the use of artificial light to modify the behaviour of fish during the trawl capture process, in a Celtic Sea mixed demersal trawl fishery off the coast of southwest England. We explore the total catch and vertical separation of fish species in the presence of artificial light, using twin-rigged trawls fitted with horizontal separator panels. Multi-rig trawls facilitate simultaneous deployment of test and control gears on the same vessel, which greatly assists in minimising between-haul spatiotemporal variability in fish abundance [e.g., @Cosgrove2019], and separator trawls have been widely used to investigate the vertical movement of fish when inside the trawl [e.g., @Cotter1997;, @Ferro2007]. We investigate the potential for artificial lights to influence the relative catchability and behaviour of fish species during demersal trawling. Specifically, we examine the following questions: (1) Do artificial lights attached to the headline of the trawl affect catches-at-length? and (2) Do artificial lights attached to the headline of the trawl affect the proportion of catches-at-length taken in the upper part of the trawl? The study included trawling during the day and night.
+
+# Methods
+
+## Field methods
+
+Sea trials were conducted in October and November 2017 aboard the chartered FV Elisabeth Veronique (14.98 m overall length; 230 hp). We used three-wire, twin-rigged, trawls towed in parallel. The treatment effect (lights) was introduced on one of the two trawls while the other identical trawl served as a control, without the treatment effect. Bison double-vented size 8 doors, a 100 kg clump weight, 18 m splits and 110 m of combination bridle were used to spread the rig. The trawls were constructed of diamond mesh green compact twine (160 mm mesh size, 3 mm diameter upper mouth; 115 mm mesh size, 4 mm diameter lower mouth, belly, and baitings; 90 mm mesh size, 4 mm diameter extension) and were rigged on groundgear made of 203 mm rockhopper discs spaced at 355 mm apart with chain droppers. To investigate the effect of lights on the vertical separation of different species, both trawls were fitted with a horizontal separator panel, constructed of green 4 mm compact twine of 90 mm diamond mesh. The separator panel was laced along the selvedge of each trawl, with a leading edge directly above the footrope, and led to two separate 80 mm diamond mesh codends (also green 4 mm compact twine).
+
+To minimise potential differences in catch efficiency between the two trawls, they were newly constructed for the purposes of the experiment, using identical materials. Also, at the start of the experiment the trawls were towed simultaneously for three hauls, without the inclusion of a treatment effect (lights), and the catches were compared. The catches from the two trawls were consistently comparable, providing confidence that they were fishing equally (data available on request). To avoid any trawl-dependent effect on vertical separation, the lights were interchanged partway through the experiment between the two trawls.
+
+Fishing took place on the trawling grounds off the coast of southwest England (Fig. 1) in ICES sub-division 7.e. After each tow, the upper and lower codends of each trawl were emptied into 4 separate hoppers on the deck and the catch from each was sorted into retained and discarded components, then measured and recorded separately. Squids and cuttlefish were measured to mantle length and all fish species were measured to total length (to the nearest cm below). All the fish retained for sale were measured. It was not practical for the two scientists to measure the length of every individual caught, so a known fraction of the substantially higher discarded portion of the catch was randomly sub-sampled to obtain length measurements. Within a haul, the absence of a species-specific catch-at-length within the range of lengths observed for that haul was recorded as a zero (0) catch.
+
+
+<!-- Figure 1 -->
+
+```{r figure1-inline, eval = inline, echo = FALSE, fig.cap = '**Figure 1** A map showing the location of the haul positions of the paired tows on trawling ground off the coast of Cornwall, UK.'}
+include_graphics('map.jpg')
+```
+
+```{r, results = 'asis', eval = !inline}
+cat("[Figure 1 here]")
+```
+
+
+## Artificial light
+
+To investigate the effect of artificial lights on fish catches and on the vertical separation of catches, the headline of one of the two trawls fished simultaneously was equipped with blue LED lights (Centro Standard Power light, peak wavelength: 463 nm) (Fig. 2a). Spectral irradiance at 30 cm in air, measured as described in @Karlsen2021, is presented in Fig. 2b. These lights were chosen because they are inexpensive, use low levels of power to operate, are pressure-rated to water depths significantly greater than the study area, are robust enough to withstand the towing and hauling process and they are sensor-activated by contact with water. The longer wavelengths of blue and green light penetrate further in seawater, and consequently many fish have vision that is sensitive to these wavelengths [@Solomon2016]. Studies have shown that fish react to blue and green light stimulus [@Marchesan2005], and while green light has been tested to modify behaviour in several fish directed fisheries [@Grimaldo2018; @Lomeli2018; @ONeill2019], blue light has been less studied [@Cuende2022; @Lomeli2019]. A total of 56 lights were used to illuminate the headline of one trawl, spaced at 25 cm apart and with the LEDs facing out from the centre, towards the trawl wings (Fig. 2). The experimental design assumed that the lights did not influence the catches and fish behaviour in the adjacent control trawl (in line with @Melli2018; @Lomeli2018; @Karlsen2021). To preserve battery power, the lights were removed and deactivated after each deployment and a complete battery replacement was carried out mid-way through the experiment.
+
+
+<!-- Figure 2 -->
+
+```{r figure2-inline, eval = inline, echo = FALSE, fig.cap = '**Figure 2** Photo in (a) showing the LED lights attached to the netting just behind the headline shown at the surface. Plots in (b) showing spectral irradiance measured at 30 cm in air at angles of 0, 45 and 90^o relative to the longitudinal axis of the housing.'}
+include_graphics(here('plots', 'figure2a_R1.jpg'))
+include_graphics(here('plots', 'figure2b_R1.jpg'))
+```
+
+```{r, results = 'asis', eval = !inline}
+cat("[Figure 2 here]")
+```
+
+
+## Data analysis
+
+Detailed analysis was undertaken for five selected species, based on their commercial importance and their higher contributions to the total catch. The selected species were haddock (*Melanogrammus aeglefinus*; FAO 3-alpha species code: HAD), grey gurnard (*Eutrigla gurnardus*; GUG), whiting (*Merlangius merlangus*; WHG), megrim (*Lepidorhombus whiffiagonis*; MEG) and Northern squid (*Loligo forbesii*; NSQ). Measured total catches-at-length and the vertical separation of catches-at-length, together with associated subsampling fractions by haul, were analysed for each species, except total catches-at-length for Northern squid, which occurred in too few hauls to be analysed reliably, and vertical separation of megrim, which were caught almost exclusively in the lower codend. Separate subsampling fractions for landings and discards were combined to calculate a weighted subsampling fraction for each length class as $x' = \sum{\{w \times x\} / \sum{\{w\}}}$ where $x$ is a vector of landing and discard subsampling fractions and $w$ is a vector of the corresponding counts.
+
+As with similar recent analyses [@Cosgrove2019; @ONeill2022], Generalised Additive Mixed Models, or GAMM [@Pedersen2019; @Wood2011] were applied. To test the effect of artificial light on total catch of each selected species, catches-at-length were compared between the two trawls for each haul, assuming a Poisson error distribution and including a log-transformed offset for the sub-sampling fraction. To test the effect of artificial lights on the vertical separation of catches of the selected species, catches-at-length in the upper codend as a proportion of the total catches were compared between the two trawls for each haul, assuming a Binomial error distribution and including the ratio of the upper:lower codend sub-sampling fractions. In both cases, the linear predictor of the statistical model including all terms considered (i.e., the saturated model) took the form:
+
+$$
+\begin{array}{rcl}
+y_{h,l} & \sim & D(\mu_{h,l}) \\
+\mu_{h,l} & = & g^{-1}(\eta_{h,l}) \\
+\eta_{h,l} & = & \alpha + \beta{\mbox{lights}_{h}} + \beta{\mbox{time of day}_{h}} + \beta{\mbox{lights}_{h} \times \mbox{time of day}_{h}} + \\
+& & f(\mbox{length}) + f(\mbox{length} \times \mbox{lights}_{h}) + f(\mbox{length} \times \mbox{time of day}_{h}) + f(\mbox{length} \times \mbox{lights}_{h} \times \mbox{time of day}_{h}) + \\ 
+& & f'(\mbox{length} \times \mbox{haul}) + \epsilon_{h,l} + q_{h,l}
+\end{array}
+$$
+
+where $\eta_{h,l}$ is the linear predictor of the response variable measured for each cm length class $l$ in every haul $h$; $\alpha$ is an intercept term; the $\beta$s are coefficients representing the effects of explanatory variables on the response variable; time of day is a factor with two levels: day or night; $f(.)$ is a smoothing function allowing the effect of length (and its interaction with the other explanatory variables) on the response variable to be non-linear; $f'(.)$ is a function allowing the effect of length on the response variable to differ between hauls that are constrained to be a random term; $\epsilon_{h,l}$ is another random term accounting for overdispersion in catches-at-length within hauls; $q_{h,l$ is the model-specific haul- and length-specific sub-sampling offset; $\mu_{h,l}$ is the expected mean response transformed by link function $g^{-1}(.)$ that depends the model-specific error distribution $D(.)$. Preliminary analysis of the data suggested that the response variables were over-dispersed and so the overdispersion random effect was included in all analyses. The response variable $y_{h,l}$ differed for each question: it was total catch (assuming a Poisson error distribution and log link function) to answer the first question and catch in the upper codend as a proportion of the total catch (assuming a Binomial error distribution and logit link function) to answer the second question.
+
+To explore whether lights affected the response variable and whether their effect (if any) differed depending on the time of day, the saturated model was simplified by removing terms, re-fitting the model and comparing its fit to that of the saturated model using Bayesian Information Criteria (BIC); the model with the smallest BIC was the most parsimonious model and was selected as the "best" model to describe variations in the response variable, although other models were explored, especially those within $\Delta$BIC $<2$ units of the "best" model [@Burnham2003].
+
+Plots were used to explore the performance of, and then draw inference from, the "best" models. To explore the performance of a "best" model, means (and standard errors) of its fitted estimates of the catches-at-length averaged over hauls were plotted alongside means (and standard errors) of actual catches-at-length averaged over hauls (Fig. 4 and Fig. 6). Where the fitted lines and their standard error bands track the actual points and their standard error bars, the model was assessed to have good performance. To draw inference about the effects of lights and times of day on catches-at-length, estimated marginal means for these effects were calculated and plotted (Fig. 5 and Fig. 7). Estimated marginal means allow for inferences about individual effects while holding other effects constant, such as an effect of lights for a specific length class of fish [e.g., @ONeill2022]. Here, the estimated marginal means presented in Fig. 5, Fig. 7, were calculated for all length classes and averaged, and therefore represent the effect(s) over the full range of observed length classes. Only where length was retained in the "best" models, and significant effects are shown in Fig. 5, Fig. 7, were the effected length classes inferred from Fig. 4, Fig. 6.
+
+## Model diagnostics
+
+For each "best" model, we plotted and inspected widely used diagnostic statistics and relationships (see online supplementary material).
+
+
+# Results
+
+During this trial, 22 paired tows with lights on either the port or starboard rig were completed at an average depth of 73.5 m, each for approximately 3 h (Table 1a). There was high variation in the number of each species caught per haul, and the numbers of haddock caught were notably higher than for all other species (Table 1b; Fig. 3).
+
+
+<!-- Figure 3 -->
+
+```{r figure3-inline, eval = inline, echo = FALSE, fig.cap = '**Figure 3** Plots in (a) show number in catches of each species in each haul. Boxes delimit the 25–75 % interquartile range (IQR), the bar represents the median, whiskers delimit the $1.5 \times$IQR range, and dots represent extreme values $> 1.5 \times$ the IQR. Plots in (b) show the length-frequency histograms for catches-at-length across hauls. Note different $y$-axis scale per panel.'}
+include_graphics(here('plots', 'figure3_R1.jpg'))
+```
+
+```{r, results = 'asis', eval = !inline}
+cat("[Figure 3 here]")
+```
+
+<!-- Table 1a -->
+
+```{r table1a-inline, eval = inline, echo = FALSE}
+if (file.exists(here('results', 'haul-summary-stats.csv'))) {
+  trip_sum <- read.csv(here('results', 'haul-summary-stats.csv'), check.names = FALSE)
+  tab1a <- gt(data.table(format(trip_sum, digits = 3)),
+              caption = md('**Table 1a** Summary statistics for the hauls with lights present or absent and under different times of day.')) |> 
+    cols_merge(columns = c(`mean depth`, `sd depth`), pattern = '{1} ({2})') |>
+    cols_merge(columns = c(`mean time`, `sd time`), pattern = '{1} ({2})') |>
+    cols_label(`time of day` = 'Time of day',
+               `n haul` = 'Number of tows',
+               `mean depth` = html('Mean depth (&#177;SD)'),
+               `mean time` = html('Mean tow duration (&#177;SD)'),
+               `total time` = 'Total fishing time') |>
+    tab_options(column_labels.padding = px(1),
+                data_row.padding = px(1),
+                row_group.padding = px(1),
+                table.font.names = 'Times New Roman',
+                table.font.size = px(10)) # 7
+  tab1a
+} else {
+  NULL
+}
+```
+
+<!-- Table 1b -->
+
+```{r table1b-inline, eval = inline, echo = FALSE}
+if (file.exists(here('results', 'haul-stats.csv'))) {
+  trip_sum <- read.csv(here('results', 'haul-stats.csv'), check.names = FALSE)
+  tab1b <- gt(data.table(format(trip_sum, digits = 3)),
+             caption = md('**Table 1b** Details of the hauls and their catches. $Q$ is the average subsampling fraction, where 1.0 indicates that all fish were measured.')) |> 
+    cols_merge(columns = c(`N_Haddock`, `Q_Haddock`), 
+               pattern = '{1} ({2})', rows = !is.na(`N_Haddock`)) |>
+    cols_merge(columns = c(`N_Grey gurnard`, `Q_Grey gurnard`), 
+               pattern = '{1} ({2})', rows = !is.na(`N_Grey gurnard`)) |>
+    cols_merge(columns = c(`N_Megrim`, `Q_Megrim`), 
+               pattern = '{1} ({2})', rows = !is.na(`N_Megrim`)) |>
+    cols_merge(columns = c(`N_Whiting`, `Q_Whiting`), 
+               pattern = '{1} ({2})', rows = !is.na(`N_Whiting`)) |>
+    cols_merge(columns = c(`N_Northern squid`, `Q_Northern squid`), 
+               pattern = '{1} ({2})', rows = !is.na(`N_Northern squid`)) |>
+    cols_label(`Haul` = 'Haul number',
+               `N_Haddock` = html('Haddock (Q)'),
+               `N_Grey gurnard` = html('Grey gurnard (Q)'),
+               `N_Megrim` = html('Megrim (Q)'),
+               `N_Whiting` = html('Whiting (Q)'),
+               `N_Northern squid` = html('Northern squid (Q)')) |>
+    tab_options(column_labels.padding = px(1),
+                data_row.padding = px(1),
+                row_group.padding = px(1),
+                table.font.names = 'Times New Roman',
+                table.font.size = px(10)) |> # 7
+    text_replace("NA", "-")
+  tab1b
+} else {
+  NULL
+}
+```
+
+
+```{r, results = 'asis', eval = !inline}
+cat("[Tables 1a & 1b here]")
+```
+
+
+## Effect of lights on catches-at-length during the night and day
+
+Despite the high between-haul variation in the catches-at-length caught of each species, there was a discernible effect of artificial lights on some species, especially those caught in larger numbers.
+
+The saturated model including the interaction between lights and time of day was selected as the "best" model, i.e., the model best describing variations in the response variable (Fig. 4, Table 2), for total catches-at-length of haddock, although a simpler model excluding lights also received non-negligible weight of empirical evidence (Table 2). This suggests that there was an effect of lights on total catches of haddock, but that the effect was weak and differed depending on time of day. The effect of light was a relative and statistically significant reduction in numbers caught during the night, most apparent at lengths 32–37 cm, and to a lesser extent increased numbers caught during the day, mostly at 29–34 cm (Fig. 4, Fig. 5, Table 2). It is noted that catches of haddock at 30–40 cm were high compared to the other species encountered (Fig. 4). The minimum conservation reference size (MCRS) for haddock in this region is 30 cm.
+
+
+<!-- Figure 4 -->
+
+```{r figure4-inline, eval = inline, echo = FALSE, fig.cap = '**Figure 4** Average number of each species in haul when lights present versus absent during the day and night. Plots show the mean Actual (points) and Fitted "best" model estimated (line) catches-at-length averaged over hauls, together with their standard errors (bars and ribbons, respectively). The "best" model for each species was that with the lowest BIC and are given in Table 2.'}
+include_graphics(here('plots', 'total_catches_allspecies_bestmod_R1.jpg'))
+```
+
+```{r, results = 'asis', eval = !inline}
+cat("[Figure 4 here]")
+```
+
+<!-- Figure 5 -->
+
+```{r figure5-inline, eval = inline, echo = FALSE, fig.cap = '**Figure 5** Estimated lights and/or time of day effects in the "best" model for each species on catches-at-length averaged over all length classes. The estimated marginal effects are expressed relative to the overall marginal mean to facilitate comparisons across species. The "best" models for each species included the following effects: haddock $\\sim$ lights and time of day; grey gurnard $\\sim$ time of day; megrim $\\sim$ lights; and whiting $\\sim$ time of day. Error bars are 95% confidence intervals and suggest statistical significance when exclusive.'}
+include_graphics(here('plots', 'total_catches_allspecies_emmeans_R1.jpg'))
+```
+
+```{r, results = 'asis', eval = !inline}
+cat("[Figure 5 here]")
+```
+
+<!-- Table 2 -->
+
+```{r table2-inline, eval = inline, echo = FALSE}
+f_fle <- list.files(path = here('results'), 
+                    pattern = '^total_catches_mod_simp_bictab_allsps.csv')
+if (length(f_fle) != 0) {
+  foo <- read.csv(here('results', f_fle), check.names = FALSE)
+  foo <- foo[, -which(colnames(foo) %in% c('ModelLik', 'LL'))]
+  foo <- format(foo, digits = 3)
+  tab2 <- gt(foo, groupname_col = 'Species', 
+             caption = md('**Table 2** Results of the total catches model simplification procedure. k - the approximate number of parameters; BIC - the Bayesian Information Criteria value; ΔBIC - the change in BIC from the top-ranked model; Weight - the weight of empirical evidence for that model; and Cum. weight - the cumulative weight across models considered for that species.')) |>
+    cols_align(align = 'left', columns = Modnames) |>
+    tab_style(style = cell_text(indent = px(10)),
+              locations = cells_body(columns = Modnames)) |>
+    cols_label(Modnames = html('Species / Model'),
+               K = html('<i>k</i>'),
+               BIC = html('BIC'),
+               Delta_BIC = html('&#916;BIC'),
+               BICWt = html('Weight'),
+               Cum.Wt = html('Cum. weight')) |>
+    tab_options(column_labels.padding = px(1),
+                data_row.padding = px(1),
+                row_group.padding = px(1),
+                table.font.names = 'Times New Roman',
+                table.font.size = px(10)) # 7
+  tab2
+} else {
+  NULL
+}
+```
+
+```{r, results = 'asis', eval = !inline}
+cat("[Table 2 here]")
+```
+
+The "best" model for grey gurnard performed well (Fig. 4). It excluded lights and indicated that catches-at-length were relatively higher during the day regardless of lights being present (Fig. 5, Table 2). Catches-at-length of grey gurnard were low compared to haddock and the saturated model including all effects received the next most empirical evidence, therefore an effect of lights could be sensitive to low catch numbers (Fig. 4).
+
+The effect of lights on total catches-at-length of megrim and whiting was weak (Fig. 5). Catches-at-length for both species were comparatively low, and the model performances were worse than for haddock and grey gurnard (Fig. 4). The "best" models for these species omitted length effects together with time of day and light effects, respectively (Table 2).
+
+
+## Effect of lights on vertical separation of catches at length during the night and day
+
+Overall, the proportion caught at length in the upper codend was highly variable for each species. Nevertheless, artificial lights did affect the vertical separation of catches of four selected species.
+
+Unlike the models for total catches-at-length, models including all effects, i.e., the saturated model including the interaction between lights and time of day, was selected as the "best" model describing the vertical separation of catches-at-length for haddock and grey gurnard, and models including lights were "best" for catches of all lengths of Northern squid and whiting (Fig. 6, Table 3). The effect of lights on the vertical separation of catches differed during the day versus the night for all species, except haddock, which were present in relatively lower proportions in the upper codend when lights were present both during the day and at night (Fig. 7). This effect on haddock was generally stronger for larger fish (Fig. 6). For whiting, Northern squid and grey gurnard, there was a relatively lower proportion of catches in the upper codend when lights were present during the day, and a negligible effect during the night (Fig. 7). Of these species, a length effect was indicated only for grey gurnard, for which the effect of lights during the day was stronger on larger fish (Fig. 6).
+
+
+<!-- Figure 6 -->
+
+```{r figure6-inline, eval = inline, echo = FALSE, fig.cap = '**Figure 6** Proportion in upper codend of each species when lights were present versus absent during the day and night. Plots show the mean Actual (points) and Fitted "best" model estimated (line) proportion of catches-at-length in upper codend averaged over hauls, together with their standard errors (bars and ribbons, respectively). The "best" model for each species was that with the lowest BIC and are given in Table 3.'}
+include_graphics(here('plots', 'prop_upper_allspecies_bestmod_R1.jpg'))
+```
+
+```{r, results = 'asis', eval = !inline}
+cat("[Figure 6 here]")
+```
+
+<!-- Figure 7 -->
+
+```{r figure7-inline, eval = inline, echo = FALSE, fig.cap = '**Figure 7** Estimated lights and/or time of day effects in the "best" model for each species on proportion in upper codend averaged over all length classes. The estimated marginal effects are expressed as a log odds ratio to facilitate comparisons across species. The "best" models for all species included lights and time of day. Error bars are 95% confidence intervals and suggest statistical significance when exclusive.'}
+include_graphics(here('plots', 'prop_upper_allspecies_emmeans_R1.jpg'))
+```
+
+```{r, results = 'asis', eval = !inline}
+cat("[Figure 7 here]")
+```
+
+<!-- Table 3 -->
+
+```{r table3-inline, eval = inline, echo = FALSE}
+f_fle <- list.files(path = here('results'), 
+                    pattern = '^prop_upper_mod_simp_bictab_allsps.csv')
+if (length(f_fle) != 0) {
+  foo <- read.csv(here('results', f_fle), check.names = FALSE)
+  foo <- foo[, -which(colnames(foo) %in% c('ModelLik', 'LL'))]
+  foo <- format(foo, digits = 3)
+  tab3 <- gt(foo, groupname_col = 'Species',
+             caption = md('**Table 3** Table showing the results of the proportion caught in upper codend model simplification procedure. k - the approximate number of parameters; BIC - the Bayesian Information Criteria value; ΔBIC - the change in BIC from the top-ranked model; Weight - the weight of empirical evidence for that model; and Cum. weight - the cumulative weight across models considered for that species.')) |>
+    cols_align(align = 'left', columns = Modnames) |>
+    tab_style(style = cell_text(indent = px(10)),
+              locations = cells_body(columns = Modnames)) |>
+    cols_label(Modnames = html('Species / Model'),
+               K = html('<i>k</i>'),
+               BIC = html('BIC'),
+               Delta_BIC = html('&#916;BIC'),
+               BICWt = html('Weight'),
+               Cum.Wt = html('Cum. weight')) |>
+    tab_options(column_labels.padding = px(1),
+                data_row.padding = px(1),
+                row_group.padding = px(1),
+                table.font.names = 'Times New Roman',
+                table.font.size = px(10)) # 7
+  tab3
+} else {
+  NULL
+}
+```
+
+```{r, results = 'asis', eval = !inline}
+cat("[Table 3 here]")
+```
+
+
+# Discussion
+
+Catches from 22 paired treatment and control separator trawls towed simultaneously showed that blue LEDs attached to the headline of a demersal trawl resulted in catches-at-length that were lower for haddock at night, and affected the vertical separation inside the trawl of catches-at-length of haddock and grey gurnard, with larger fish responding most strongly, and catches of all lengths of Northern squid and whiting.
+
+
+
+Changes to catch in the presence of lights have been exhibited in a diversity of fish species using a range of trawl and light designs in different fisheries. For example, lower catches of rock sole (*Lepidopsetta bilineata*) [@Rose2014], eulachon (*Thaleichthys pacificus*) [@Hannah2015; @Lomeli2018], yellowtail rockfish (*Sebastes flavidus*) [@Lomeli2019], Pacific halibut (*Hippoglossus stenolepis*) [@Lomeli2018] and cod [@Oliver2022] were observed with lights, and increased catches of rockfishes *Sebastes* spp., English sole (*Parophrys vetulus*) and petrale sole (*Eopsetta jordani*) [@Lomeli2018]. Some studies have shown no effect of lights on catches of any species [e.g., @Weinberg1999;, @Cuende2022]. A new observation from this study is that light-induced changes in catch differed between day and night within the same species. Fewer haddock were caught during the night when lights were present, and marginally more during the day.
+
+This study also observed modified behaviour of species inside the trawl mouth. For haddock, the effect of lights was to increase the proportion of catch in the lower codend during the day and night. Haddock usually rise at the mouth of a trawl [@Ferro2007; @Main1981; @Sistiaga2016], and the presence of blue LEDs altered this behaviour. During night trials in the North Sea, @ONeill2019 also found that illuminating either the leading edge of a separator panel or the fishing line, increased the proportion of haddock retained in a lower codend. The same diel effect was also observed by @ONeill2022, when using a trawl fitted with an illuminated grid, there was a lower proportion of haddock in the upper codend at night than during the day.
+
+Similarly, when testing a separator trawl fitted with illuminous netting, @Karlsen2021 observed that haddock switched from a strong preference for the upper to the lower compartment for size groups 37–43 cm. @Oliver2021, @Oliver2022 reported lower haddock catches from trawls with a raised fishing-line when illuminated, and @Grimaldo2018 noted that, although there was no effect on haddock escapement through a square mesh panel with lights, there were strong behavioural changes. The results presented here, combined with other studies, indicate that the normal behaviour of haddock, to rise inside the trawl, is changed by artificial light, so more haddock remain lower in the trawl. Furthermore, except for findings by @Melli2018, this behavioural reaction is displayed in a range of conditions, regardless of light position within the trawl gear or time of day, and for both blue (464–468 nm) and green (530 nm) lights.
+
+Lights also affected the vertical separation of Northern squid, whiting and grey gurnard inside the trawl. All three species showed the same pattern, with less retained in the upper codend with lights, but only during the day. For grey gurnard, @ONeill2019 also observed a lower proportion of catch in the upper codend with lights. The change to total catch identified here was more pronounced than the change in vertical movement, highlighting the benefit of investigating both responses. For whiting, a lower proportion caught in an upper or raised codend in the presence of lights was also reported by @ONeill2019, @Oliver2022 and @ONeill2022. The usual behaviour of Northern squid and whiting is to rise inside the trawl [@Glass1999; @Krag2009], and this behaviour may be changed by lights, but contrary to haddock, there is no consistently reported response during the day versus night.
+
+For some results in this study, the effects of light were most apparent in specific fish length ranges. For example, the effect of lights on vertical separation in haddock was strongest among fish between 30 and 40 cm (comparable to @Karlsen2021), representing the majority, 80%, of the catch. Whether those differences are a true reflection of length-specific behavioural differences within and between species is unclear; it is possible that either insufficient numbers were caught or sampled at some lengths to detect an effect from the light, or that a catch difference was detected that was due to some other factor. Conversely, insufficient numbers-at-length or influences due to some other factors could also have made it difficult to detect meaningful effects statistically. While our study followed recent recommended approaches to analyse such trawl selectivity experiments [@Cosgrove2019; @ONeill2022], there remain ways that these approaches could be extended, such as including additional covariates on the mean or variation of the response variables, thereby reducing the need for complex random effect terms, or including spatial or temporal correlations where needed.
+
+This study sought to identify light-induced changes to catches and to the vertical movement of fish inside the trawl. The experimental design aimed to include a valid control variable, by using simultaneous paired trawls and by switching the lights between trawls. The design also assumed that the lights on the treatment trawl did not influence the catches and fish behaviour in the adjacent control trawl. It was not possible to test this assumption without detailed light measurements, so we cannot exclude the possibility that lights affected catches in the control. It is noted that if light had affected the control trawl, it would only have reduced our observed light effect, suggesting the effect of lights could be stronger than those measured. It is acknowledged that measuring the properties of the light, as experienced by the fish in the trawls, would be an important feature of future trials.
+
+The process by which a fish is caught and retained in a trawl involves a complex sequence of behaviours, including the initial detection of the trawl warps, doors and bridles, a reaction to the visual stimuli of the floats, netting and ground gear, and behaviour once confined in the body of the trawl [@Glass1993]. The mechanisms determining the effects observed in this and other studies are not yet known. Here, the addition of artificial light to the headline of the trawl influenced the catch rates of haddock. The results also indicate that artificial light can be used to modify the height at which some fish species enter and remain inside the trawl. These results support other studies showing that behavioural reactions stimulated by artificial light vary between species [@Lomeli2012; @Weinberg1999] and these may have seasonal and environmental dependencies [@ONeill2019]. Moreover, there are some common observations across studies which suggest lights change the normal behaviour of some species which rise inside the trawl during the capture process, in particular, haddock.
+
+The UK and EU fisheries policies aim to incentivise more selective fishing. Artificial light technology offers a different approach, alongside more conventional trawl modifications, to enhance trawl selectivity in mixed fisheries. The species-specific reactions to light, and the ability to change the light wavelength, intensity, strobing, and the position of lights on the trawl, particularly as LED light technology develops, offers many opportunities to investigate using artificial light to enhance trawl selectivity.
+
+# CRediT authorship contribution statement
+Samantha Birch: Conceptualization, Methodology, Investigation, Writing - Original Draft, Writing - Review & Editing. Stephen Gregory: Methodology, Formal analysis, Validation, Writing - Original draft preparation, Writing - Review & Editing. David Maxwell: Methodology, Formal analysis, Validation, Writing - Original draft preparation, Writing - Review & Editing. Marieke Desender: Methodology, Investigation, Writing - Original Draft. Thomas Catchpole: Conceptualization, Methodology, Investigation, Writing - Original Draft, Writing - Review & Editing, Funding acquisition.
+
+# Declaration of Competing Interest
+The authors declare that they have no known competing financial interests or personal relationships that could have appeared to influence the work reported in this paper.
+
+# Acknowledgements
+Mark Curtis and the crew of FV Elisabeth Veronique are warmly thanked for their dedication to this research, along with their patience, hospitality, and cooperation throughout the trial. This work would not have been possible without them. Special mention is also made of Sam Elliott, for at-sea assistance and continued support, and Junita Karlsen for help with light measurements. The authors would also like to thank the individuals who reviewed and contributed to the quality of this manuscript. This work has received funding from the UK Defra ASSIST project and the European Union’s Horizon 2020 research and innovation programme under grant agreement No 773521.
+
+# References
+
+::: {#refs}
+:::
+
+```{r, results = 'asis', eval = !inline}
+cat('\\newpage')
+```
+
+```{r, results = 'asis', eval = !inline}
+cat("# Tables \n")
+```
+
+<!-- Table 1a -->
+
+```{r table1a, eval = !inline, echo = FALSE}
+if (file.exists(here('results', 'haul-summary-stats.csv'))) {
+  trip_sum <- read.csv(here('results', 'haul-summary-stats.csv'), check.names = FALSE)
+  tab1a <- gt(data.table(format(trip_sum, digits = 3)),
+              caption = md('**Table 1a** Summary statistics for the hauls with lights present or absent and under different times of day.')) |> 
+    cols_merge(columns = c(`mean depth`, `sd depth`), pattern = '{1} ({2})') |>
+    cols_merge(columns = c(`mean time`, `sd time`), pattern = '{1} ({2})') |>
+    cols_label(`time of day` = 'Time of day',
+               `n haul` = 'Number of tows',
+               `mean depth` = html('Mean depth (&#177;SD)'),
+               `mean time` = html('Mean tow duration (&#177;SD)'),
+               `total time` = 'Total fishing time') |>
+    tab_options(column_labels.padding = px(1),
+                data_row.padding = px(1),
+                row_group.padding = px(1),
+                table.font.names = 'Times New Roman',
+                table.font.size = px(10)) # 7
+  tab1a
+} else {
+  NULL
+}
+```
+
+```{r, results = 'asis', eval = !inline}
+cat('\\newpage')
+```
+
+<!-- Table 1b -->
+
+```{r table1b, eval = !inline, echo = FALSE}
+if (file.exists(here('results', 'haul-stats.csv'))) {
+  trip_sum <- read.csv(here('results', 'haul-stats.csv'), check.names = FALSE)
+  tab1b <- gt(data.table(format(trip_sum, digits = 3)),
+              caption = md('**Table 1b** Details of the hauls and their catches. $Q$ is the average subsampling fraction, where 1.0 indicates that all fish were measured.')) |> 
+    cols_merge(columns = c(`N_Haddock`, `Q_Haddock`), 
+               pattern = '{1} ({2})', rows = !is.na(`N_Haddock`)) |>
+    cols_merge(columns = c(`N_Grey gurnard`, `Q_Grey gurnard`), 
+               pattern = '{1} ({2})', rows = !is.na(`N_Grey gurnard`)) |>
+    cols_merge(columns = c(`N_Megrim`, `Q_Megrim`), 
+               pattern = '{1} ({2})', rows = !is.na(`N_Megrim`)) |>
+    cols_merge(columns = c(`N_Whiting`, `Q_Whiting`), 
+               pattern = '{1} ({2})', rows = !is.na(`N_Whiting`)) |>
+    cols_merge(columns = c(`N_Northern squid`, `Q_Northern squid`), 
+               pattern = '{1} ({2})', rows = !is.na(`N_Northern squid`)) |>
+    cols_label(`Haul` = 'Haul number',
+               `N_Haddock` = html('Haddock (Q)'),
+               `N_Grey gurnard` = html('Grey gurnard (Q)'),
+               `N_Megrim` = html('Megrim (Q)'),
+               `N_Whiting` = html('Whiting (Q)'),
+               `N_Northern squid` = html('Northern squid (Q)')) |>
+    tab_options(column_labels.padding = px(1),
+                data_row.padding = px(1),
+                row_group.padding = px(1),
+                table.font.names = 'Times New Roman',
+                table.font.size = px(10)) |> # 7
+    text_replace("NA", "-")
+  tab1b
+} else {
+  NULL
+}
+```
+
+```{r, results = 'asis', eval = !inline}
+cat('\\newpage')
+```
+
+<!-- Table 2 -->
+
+```{r table2, eval = !inline, echo = FALSE}
+f_fle <- list.files(path = here('results'), 
+                    pattern = '^total_catches_mod_simp_bictab_allsps.csv')
+if (length(f_fle) != 0) {
+  foo <- read.csv(here('results', f_fle), check.names = FALSE)
+  foo <- foo[, -which(colnames(foo) %in% c('ModelLik', 'LL'))]
+  foo <- format(foo, digits = 3)
+  tab2 <- gt(foo, groupname_col = 'Species', 
+             caption = md('**Table 2** Results of the total catches model simplification procedure. k - the approximate number of parameters; BIC - the Bayesian Information Criteria value; ΔBIC - the change in BIC from the top-ranked model; Weight - the weight of empirical evidence for that model; and Cum. weight - the cumulative weight across models considered for that species.')) |>
+    cols_align(align = 'left', columns = Modnames) |>
+    tab_style(style = cell_text(indent = px(10)),
+              locations = cells_body(columns = Modnames)) |>
+    cols_label(Modnames = html('Species / Model'),
+               K = html('<i>k</i>'),
+               BIC = html('BIC'),
+               Delta_BIC = html('&#916;BIC'),
+               BICWt = html('Weight'),
+               Cum.Wt = html('Cum. weight')) |>
+    tab_options(column_labels.padding = px(1),
+                data_row.padding = px(1),
+                row_group.padding = px(1),
+                table.font.names = 'Times New Roman',
+                table.font.size = px(10)) # 7
+  tab2
+} else {
+  NULL
+}
+```
+
+```{r, results = 'asis', eval = !inline}
+cat('\\newpage')
+```
+
+<!-- Table 3 -->
+
+```{r table3, eval = !inline, echo = FALSE}
+f_fle <- list.files(path = here('results'), 
+                    pattern = '^prop_upper_mod_simp_bictab_allsps.csv')
+if (length(f_fle) != 0) {
+  foo <- read.csv(here('results', f_fle), check.names = FALSE)
+  foo <- foo[, -which(colnames(foo) %in% c('ModelLik', 'LL'))]
+  foo <- format(foo, digits = 3)
+  tab3 <- gt(foo, groupname_col = 'Species',
+             caption = md('**Table 3** Table showing the results of the proportion caught in upper codend model simplification procedure. k - the approximate number of parameters; BIC - the Bayesian Information Criteria value; ΔBIC - the change in BIC from the top-ranked model; Weight - the weight of empirical evidence for that model; and Cum. weight - the cumulative weight across models considered for that species.')) |>
+    cols_align(align = 'left', columns = Modnames) |>
+    tab_style(style = cell_text(indent = px(10)),
+              locations = cells_body(columns = Modnames)) |>
+    cols_label(Modnames = html('Species / Model'),
+               K = html('<i>k</i>'),
+               BIC = html('BIC'),
+               Delta_BIC = html('&#916;BIC'),
+               BICWt = html('Weight'),
+               Cum.Wt = html('Cum. weight')) |>
+    tab_options(column_labels.padding = px(1),
+                data_row.padding = px(1),
+                row_group.padding = px(1),
+                table.font.names = 'Times New Roman',
+                table.font.size = px(10)) # 7
+  tab3
+} else {
+  NULL
+}
+```
+
+```{r, results = 'asis', eval = !inline}
+cat('\\newpage')
+```
+
+
+```{r, results = 'asis', eval = !inline}
+cat("# Figures \n")
+```
+
+<!-- Figure 1 -->
+
+```{r figure1, eval = !inline, echo = FALSE, fig.cap = '**Figure 1** A map showing the location of the haul positions of the paired tows on trawling ground off the coast of Cornwall, UK.'}
+include_graphics('map.jpg')
+```
+
+```{r, results = 'asis', eval = !inline}
+cat('\\newpage')
+```
+
+<!-- Figure 2 -->
+
+```{r figure2, eval = !inline, echo = FALSE, fig.cap = '**Figure 2** Photo in (a) showing the LED lights attached to the netting just behind the headline shown at the surface. Plots in (b) showing spectral irradiance measured at 30 cm in air at angles of 0, 45 and 90^o relative to the longitudinal axis of the housing.'}
+include_graphics('net-light-photo.jpg')
+```
+
+```{r, results = 'asis', eval = !inline}
+cat('\\newpage')
+```
+
+<!-- Figure 3 -->
+
+```{r figure3, eval = !inline, echo = FALSE, fig.cap = '**Figure 3** Plots in (a) show number in catches of each species in each haul. Boxes delimit the 25–75 % interquartile range (IQR), the bar represents the median, whiskers delimit the $1.5 \times$IQR range, and dots represent extreme values $> 1.5 \times$ the IQR. Plots in (b) show the length-frequency histograms for catches-at-length across hauls. Note different $y$-axis scale per panel.'}
+include_graphics(here('plots', 'figure3_R1.jpg'))
+```
+
+```{r, results = 'asis', eval = !inline}
+cat('\\newpage')
+```
+
+<!-- Figure 4 -->
+
+```{r figure4, eval = !inline, echo = FALSE, fig.cap = '**Figure 4** Average number of each species in haul when lights present versus absent during the day and night. Plots show the mean Actual (points) and Fitted "best" model estimated (line) catches-at-length averaged over hauls, together with their standard errors (bars and ribbons, respectively). The "best" model for each species was that with the lowest BIC and are given in Table 2.'}
+include_graphics(here('plots', 'total_catches_allspecies_bestmod_R1.jpg'))
+```
+
+```{r, results = 'asis', eval = !inline}
+cat('\\newpage')
+```
+
+<!-- Figure 5 -->
+
+```{r figure5, eval = !inline, echo = FALSE, fig.cap = '**Figure 5** Estimated lights and/or time of day effects in the "best" model for each species on catches-at-length averaged over all length classes. The estimated marginal effects are expressed relative to the overall marginal mean to facilitate comparisons across species. The "best" models for each species included the following effects: haddock $\\sim$ lights and time of day; grey gurnard $\\sim$ time of day; megrim $\\sim$ lights; and whiting $\\sim$ time of day. Error bars are 95% confidence intervals and suggest statistical significance when exclusive.'}
+include_graphics(here('plots', 'total_catches_allspecies_emmeans_R1.jpg'))
+```
+
+```{r, results = 'asis', eval = !inline}
+cat('\\newpage')
+```
+
+<!-- Figure 6 -->
+
+```{r figure6, eval = !inline, echo = FALSE, fig.cap = '**Figure 6** Proportion in upper codend of each species when lights were present versus absent during the day and night. Plots show the mean Actual (points) and Fitted "best" model estimated (line) proportion of catches-at-length in upper codend averaged over hauls, together with their standard errors (bars and ribbons, respectively). The "best" model for each species was that with the lowest BIC and are given in Table 3.'}
+include_graphics(here('plots', 'prop_upper_allspecies_bestmod_R1.jpg'))
+```
+
+```{r, results = 'asis', eval = !inline}
+cat('\\newpage')
+```
+
+<!-- Figure 7 -->
+
+```{r figure7, eval = !inline, echo = FALSE, fig.cap = '**Figure 7** Estimated lights and/or time of day effects in the "best" model for each species on proportion in upper codend averaged over all length classes. The estimated marginal effects are expressed as a log odds ratio to facilitate comparisons across species. The "best" models for all species included lights and time of day. Error bars are 95% confidence intervals and suggest statistical significance when exclusive.'}
+include_graphics(here('plots', 'prop_upper_allspecies_emmeans_R1.jpg'))
+```
